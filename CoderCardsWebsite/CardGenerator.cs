@@ -77,8 +77,7 @@ namespace CoderCardsLibrary
                 score = scores.Happiness * happyBoost;
             }
 
-            var filename = Path.Combine(ASSETS_FOLDER, cardBack);
-            return Image.FromFile(filename);
+            return Image.FromFile(GetFullImagePath(cardBack));
         }
 
         static async Task<string> CallEmotionAPI(byte[] image)
@@ -97,6 +96,12 @@ namespace CoderCardsLibrary
             }
 
             return null;
+        }
+
+        static string GetFullImagePath(string filename)
+        {
+            var appPath = Path.Combine(Environment.GetEnvironmentVariable("HOME"), "site", "wwwroot", ASSETS_FOLDER);
+            return Path.Combine(appPath, filename);
         }
     }
 }
