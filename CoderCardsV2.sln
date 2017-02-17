@@ -5,11 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "AzureDeployment", "AzureDeployment\AzureDeployment.deployproj", "{20929F72-D191-433B-B784-48B46F5FD632}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C3CF9A70-E7D1-42E6-8B49-5DE8D141515F}"
-	ProjectSection(SolutionItems) = preProject
-		.deployment = .deployment
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoderCardsWebsite", "CoderCardsWebsite\CoderCardsWebsite.csproj", "{86FA7FD5-EFFD-4ADA-8498-D918E5533DCF}"
 EndProject
 Global

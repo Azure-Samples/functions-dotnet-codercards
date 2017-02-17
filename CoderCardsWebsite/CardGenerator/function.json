@@ -6,7 +6,7 @@
       "name": "image",
       "type": "blobTrigger",
       "direction": "in",
-      "path": "card-input/{filename}.jpg",
+      "path": "%card-input%/{filename}.jpg",
       "connection": "AzureWebJobsStorage"
     },
     {
