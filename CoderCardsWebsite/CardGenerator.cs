@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 using System.Drawing;
-using System.Drawing.Imaging;
 using Microsoft.Azure.WebJobs.Host;
 using System.Net.Http;
-
-using static CoderCardsLibrary.ImageHelpers;
 using System.Net.Http.Headers;
 using System.Net;
+
+using static CoderCardsLibrary.ImageHelpers;
 
 namespace CoderCardsLibrary
 {
@@ -100,8 +96,13 @@ namespace CoderCardsLibrary
 
         static string GetFullImagePath(string filename)
         {
-            var appPath = Path.Combine(Environment.GetEnvironmentVariable("HOME"), "site", "wwwroot", ASSETS_FOLDER);
-            return Path.Combine(appPath, filename);
+            var path = Path.Combine(
+                Environment.GetEnvironmentVariable("HOME"), 
+                Environment.GetEnvironmentVariable("SITE_PATH"), 
+                ASSETS_FOLDER,
+                filename);
+
+            return Path.GetFullPath(path);
         }
     }
 }
