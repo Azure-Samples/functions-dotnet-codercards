@@ -83,7 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="CardGenerator\function.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

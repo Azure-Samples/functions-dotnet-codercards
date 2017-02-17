@@ -32,5 +32,12 @@
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoderCardsWebsite\CoderCardsWebsite.csproj">
+      <Targets>Build;Package</Targets>
+      <AdditionalProperties>PackageLocation=..\AzureDeployment\$(ProjectReferencesOutputPath)\CoderCardsWebsite\package.zip</AdditionalProperties>
+      <IncludeFilePath>$(ProjectReferencesOutputPath)\CoderCardsWebsite\package.zip</IncludeFilePath>
+    </ProjectReference>
+  </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>
