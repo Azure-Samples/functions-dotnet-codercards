@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -50,12 +46,18 @@ namespace CoderCardsLibrary
         const int ScoreX        = 654;
         const int ScoreY        = 70;
         const int ScoreWidth    = 117;
-        const int NameFontSize  = 34;
-        const int TitleFontSize = 26;
         #endregion
 
-        private const string FontFamilyName = "Microsoft Sans Serif";
+        #region Font info
+        const string FontFamilyName = "Microsoft Sans Serif";
+        const int NameFontSize = 38;
+        const int TitleFontSize = 30;
+        const short ScoreFontSize = 55;
+        #endregion
 
+        // This code uses System.Drawing to merge images and render text on the image
+        // System.Drawing SHOULD NOT be used in a production application
+        // It is not supported in server scenarios and is used here as a demo only!
         public static Image MergeCardImage(Image card, byte[] imageBytes, Tuple<string, string> personInfo, double score)
         {
             using (MemoryStream faceImageStream = new MemoryStream(imageBytes))
@@ -79,22 +81,26 @@ namespace CoderCardsLibrary
         public static void RenderScore(Graphics graphics, int xPos, int yPos, int width, string score)
         {
             var brush = new SolidBrush(Color.Black);
-            var fontSize = 38;
-            var font = new Font("Microsoft Sans Serif", fontSize, FontStyle.Bold);
+            var font = CreateFont(ScoreFontSize);
             SizeF size = graphics.MeasureString(score, font);
 
             graphics.DrawString(score, font, brush, width - size.Width + xPos, yPos);
         }
 
+        private static Font CreateFont(int fontSize)
+        {
+            return new Font(FontFamilyName, fontSize, FontStyle.Bold, GraphicsUnit.Pixel);
+        }
+
         public static void RenderText(Graphics graphics, int fontSize, int xPos, int yPos, int width, string text)
         {
             var brush = new SolidBrush(Color.Black);
-            var font = new Font(FontFamilyName, fontSize, FontStyle.Bold);
+            var font = CreateFont(fontSize);
             SizeF size;
 
             do
             {
-                font = new Font(FontFamilyName, fontSize--, FontStyle.Bold);
+                font = CreateFont(fontSize--);
                 size = graphics.MeasureString(text, font);
             }
             while (size.Width > width);
