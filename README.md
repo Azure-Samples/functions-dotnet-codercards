@@ -18,6 +18,7 @@ This is a precompiled function version of the Azure Functions sample [CoderCards
 
 * The card is written to the output blob container specified by the app setting `output-container`. See [function\.json](https://github.com/lindydonna/CoderCardsV2/blob/master/CoderCardsWebsite/CardGenerator/function.json#L15).
 
+
 ## Required App Settings 
 
 | Key                 | Description |
@@ -28,7 +29,6 @@ This is a precompiled function version of the Azure Functions sample [CoderCards
 | input-container     | Name of Storage container for output images. Use a value like "local-card-output" locally and "card-output" on Azure |
 | HOME                | Set to "." when running locally. Is automatically set on Azure |
 | SITE_PATH           | Use "." when running locally. Use `site\\wwwroot` on Azure |
-
 
 ## Local debugging in Visual Studio 
 
@@ -45,25 +45,23 @@ Since the project is a Web App, by default F5 will launch IIS Express. With a fe
 
 ![Start external program settings](https://cloud.githubusercontent.com/assets/4260261/23055872/1d889b4e-f49d-11e6-9a58-42f42c9d02f3.png)
 
+## Publishing the project
+
+As of 2/22/17, the sample requires a pre-release package of the Azure Functions runtime. In **App Settings** for the Function App on Azure, set `FUNCTIONS_EXTENSION_VERSION` to `1.0.10757`.
+
 ## Running the demo
-
-### Demo Setup
-
-TBD
-
-### Running the demo
 
 1. Choose images that are **square** with a filename in the form `Name of person-Title of person.jpg`. The filename is parsed to produce text on the card.
 
 2. Drop images into the `card-input` container. Once the function runs, you'll see generated cards in `card-output`.
 
-### Notes
+## Notes
 
 * The demo uses System.Drawing, which is NOT recommended for production apps. To learn more, see [Why you should not use System\.Drawing from ASP\.NET applications](http://www.asprangers.com/post/2012/03/23/Why-you-should-not-use-SystemDrawing-from-ASPNET-applications.aspx).
 
 * Happy faces get a multiplier of 4, angry gets a multiplier of 2. I encourage you to tweak for maximum comedic effect!
 
-### Talking points about Azure Functions
+## Talking points about Azure Functions
 
 * The code is triggered off a new blob in a container. We automatically get a binding for both the byte array and the blob name
 
