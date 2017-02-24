@@ -47,7 +47,7 @@ Since the project is a Web App, by default F5 will launch IIS Express. With a fe
 
 ## Publishing the project
 
-As of 2/22/17, the sample requires a pre-release package of the Azure Functions runtime. In **App Settings** for the Function App on Azure, set `FUNCTIONS_EXTENSION_VERSION` to `1.0.10757`.
+As of 2/22/17, the sample requires a pre-release package of the Azure Functions runtime. In **App Settings** for the Function App on Azure, set `FUNCTIONS_EXTENSION_VERSION` to `1.0.10765`.
 
 ## Running the demo
 
