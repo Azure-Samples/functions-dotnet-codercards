@@ -45,10 +45,6 @@ Since the project is a Web App, by default F5 will launch IIS Express. With a fe
 
 ![Start external program settings](https://cloud.githubusercontent.com/assets/4260261/23055872/1d889b4e-f49d-11e6-9a58-42f42c9d02f3.png)
 
-## Publishing the project
-
-As of 2/22/17, the sample requires a pre-release package of the Azure Functions runtime. In **App Settings** for the Function App on Azure, set `FUNCTIONS_EXTENSION_VERSION` to `1.0.10765`.
-
 ## Running the demo
 
 1. Choose images that are **square** with a filename in the form `Name of person-Title of person.jpg`. The filename is parsed to produce text on the card.

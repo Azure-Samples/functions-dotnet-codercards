@@ -106,6 +106,7 @@
     <Content Include="appsettings.json" />
     <Content Include="CardGenerator\function.json" />
     <Content Include="packages.config" />
+    <Content Include="host.json" />
     <None Include="Properties\PublishProfiles\donnam-vs-demo2 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Package.pubxml" />
     <None Include="Web.Debug.config">
