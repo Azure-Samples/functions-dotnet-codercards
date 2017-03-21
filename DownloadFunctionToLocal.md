@@ -5,7 +5,10 @@ If you have an existing Function App with C# functions, follow these steps to co
 - [Visual Studio Tools for Azure Functions](https://aka.ms/azfunctiontools)
 - [Azure Functions CLI](https://npmjs.com/package/azure-functions-cli)
 
-## Creating the project
+## Download existing code and settings
+
+![Kudu download](kudu-download.gif)
+
 1. Go to the Kudu site for your Function App (**Function App Settings** -> **Go to Kudu**)
 
 2. Navigate to the `site` folder. Click the download link. Alternatively, navigate to `https://function-app-name.scm.azurewebsites.net/api/zip/site/wwwroot/`. Save the file `wwwroot.zip` to a temporary directory on your computer.
