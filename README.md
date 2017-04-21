@@ -26,7 +26,7 @@ This is a precompiled function version of the Azure Functions sample [CoderCards
 | AzureWebJobsStorage | Storage account connection string |
 | EmotionAPIKey       | Key for [Cognitive Services Emotion API](https://www.microsoft.com/cognitive-services/en-us/emotion-api) |
 | input-container     | Name of Storage container for input images. Use a value like "local-card-input" locally and "card-input" on Azure |
-| input-container     | Name of Storage container for output images. Use a value like "local-card-output" locally and "card-output" on Azure |
+| output-container     | Name of Storage container for output images. Use a value like "local-card-output" locally and "card-output" on Azure |
 | HOME                | Set to "." when running locally. Is automatically set on Azure |
 | SITE_PATH           | Use "." when running locally. Use `site\\wwwroot` on Azure |
 
