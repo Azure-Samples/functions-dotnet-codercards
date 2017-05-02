@@ -24,6 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include=".nuget\NuGet.Config" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
     <PackageReference Include="Microsoft.Azure.KeyVault.Core" version="1.0.0" />
@@ -40,7 +44,7 @@
     <PackageReference Include="Newtonsoft.Json" version="9.0.1" />
     <PackageReference Include="System.Spatial" version="5.6.4" />
     <PackageReference Include="WindowsAzure.Storage" version="7.2.1" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" version="1.0.0-alpha3" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" version="1.0.0-alpha1" />
  
   </ItemGroup>
 
