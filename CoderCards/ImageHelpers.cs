@@ -2,50 +2,23 @@
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using Microsoft.ProjectOxford.Common.Contract;
 
 namespace CoderCardsLibrary
 {
-    #region POCO definitions 
-    public class Face
-    {
-        public FaceRectangle FaceRectangle { get; set; }
-        public Scores Scores { get; set; }
-    }
-
-    public class FaceRectangle
-    {
-        public int Left { get; set; }
-        public int Top { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-    }
-
-    public class Scores
-    {
-        public double Anger { get; set; }
-        public double Contempt { get; set; }
-        public double Disgust { get; set; }
-        public double Fear { get; set; }
-        public double Happiness { get; set; }
-        public double Neutral { get; set; }
-        public double Sadness { get; set; }
-        public double Surprise { get; set; }
-    }
-    #endregion
-
     public class ImageHelpers
     {
         #region Pixel locations
-        const int TopLeftFaceX  = 85;
-        const int TopLeftFaceY  = 187;
-        const int FaceRect      = 648;
-        const int NameTextX     = 56;
-        const int NameTextY     = 60;
-        const int TitleTextX    = 108;
-        const int NameWidth     = 430;
-        const int ScoreX        = 654;
-        const int ScoreY        = 70;
-        const int ScoreWidth    = 117;
+        const int TopLeftFaceX = 85;
+        const int TopLeftFaceY = 187;
+        const int FaceRect = 648;
+        const int NameTextX = 56;
+        const int NameTextY = 60;
+        const int TitleTextX = 108;
+        const int NameWidth = 430;
+        const int ScoreX = 654;
+        const int ScoreY = 70;
+        const int ScoreWidth = 117;
         #endregion
 
         #region Font info
@@ -58,7 +31,7 @@ namespace CoderCardsLibrary
         // This code uses System.Drawing to merge images and render text on the image
         // System.Drawing SHOULD NOT be used in a production application
         // It is not supported in server scenarios and is used here as a demo only!
-        public static Image MergeCardImage(Image card, byte[] imageBytes, Tuple<string, string> personInfo, double score)
+        public static void MergeCardImage(Image card, byte[] imageBytes, string personName, string personTitle, double score)
         {
             using (MemoryStream faceImageStream = new MemoryStream(imageBytes))
             {
@@ -67,13 +40,11 @@ namespace CoderCardsLibrary
                     using (Graphics g = Graphics.FromImage(card))
                     {
                         g.DrawImage(faceImage, TopLeftFaceX, TopLeftFaceY, FaceRect, FaceRect);
-                        RenderText(g, NameFontSize, NameTextX, NameTextY, NameWidth, personInfo.Item1);
-                        RenderText(g, TitleFontSize, NameTextX + 4, TitleTextX, NameWidth, personInfo.Item2); // second line seems to need some left padding
+                        RenderText(g, NameFontSize, NameTextX, NameTextY, NameWidth, personName);
+                        RenderText(g, TitleFontSize, NameTextX + 4, TitleTextX, NameWidth, personTitle); // second line seems to need some left padding
 
                         RenderScore(g, ScoreX, ScoreY, ScoreWidth, score.ToString());
                     }
-
-                    return card;
                 }
             }
         }
@@ -132,15 +103,15 @@ namespace CoderCardsLibrary
             return null;
         }
 
-        public static double RoundScore(double score) => Math.Round(score * 100);
+        public static float RoundScore(float score) => (float)Math.Round((decimal)(score * 100), 0);
 
-        public static void NormalizeScores(Scores scores)
+        public static void NormalizeScores(EmotionScores scores)
         {
-            scores.Anger     = RoundScore(scores.Anger);
+            scores.Anger = RoundScore(scores.Anger);
             scores.Happiness = RoundScore(scores.Happiness);
-            scores.Neutral   = RoundScore(scores.Neutral);
-            scores.Sadness   = RoundScore(scores.Sadness);
-            scores.Surprise  = RoundScore(scores.Surprise);
+            scores.Neutral = RoundScore(scores.Neutral);
+            scores.Sadness = RoundScore(scores.Sadness);
+            scores.Surprise = RoundScore(scores.Surprise);
         }
     }
 }
