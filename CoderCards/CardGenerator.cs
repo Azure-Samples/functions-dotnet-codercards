@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.IO;
 using System.Drawing;
 using Microsoft.Azure.WebJobs.Host;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net;
 
 using static CoderCardsLibrary.ImageHelpers;
 using Microsoft.Azure.WebJobs;
