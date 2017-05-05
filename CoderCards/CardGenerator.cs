@@ -41,12 +41,10 @@ namespace CoderCardsLibrary
         }
 
         [FunctionName("RequestImageProcessing")]
-        public static void RequestImageProcessing(
-            [HttpTrigger] CardInfoMessage input, 
-            [Queue("%input-queue%")] out CardInfoMessage cardInfo,
-            TraceWriter log)
+        [return: Queue("%input-queue%")]
+        public static CardInfoMessage RequestImageProcessing([HttpTrigger] CardInfoMessage input, TraceWriter log)
         {
-            cardInfo = input;
+            return input;
         }
 
         static Image GetCardImageAndScores(EmotionScores scores, out double score)
