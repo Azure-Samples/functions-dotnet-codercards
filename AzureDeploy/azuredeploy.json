@@ -92,6 +92,26 @@
             {
               "name": "WEBSITE_NODE_DEFAULT_VERSION",
               "value": "6.5.0"
+            },
+            {
+              "name": "EmotionAPIKey",
+              "value": "[parameters('emotionAPIKey')]"
+            },
+            {
+              "name": "input-container",
+              "value": "card-input"
+            },
+            {
+              "name": "output-container",
+              "value": "card-output"
+            },
+            {
+              "name": "input-queue",
+              "value": "queue-input"
+            },
+            {
+              "name": "SITE_PATH",
+              "value": "site\\wwwroot"
             }
           ]
         }
