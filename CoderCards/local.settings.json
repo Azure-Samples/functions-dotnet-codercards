@@ -8,9 +8,9 @@
     "card-input": "card-input-test",
     "input-container": "local-card-input",
     "output-container": "local-card-output",
-    "input-queue":  "local-queue",
+    "input-queue": "local-queue",
     "HOME": ".",
-    "SITE_PATH":  "."
+    "SITE_PATH": "."
   },
   "ConnectionStrings": {}
 }

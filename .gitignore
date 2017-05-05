@@ -252,3 +252,4 @@ paket-files/
 *.sln.iml
 /CoderCardsLibrary/appsettings.json
 /CoderCardsWebsite/appsettings.json
+/CoderCards/local.settings.json
