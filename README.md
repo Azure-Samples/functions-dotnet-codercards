@@ -4,20 +4,26 @@ This is a precompiled function version of the Azure Functions sample [CoderCards
 
 ## About the sample
 
-* This sample uses the new [precompiled function feature](https://github.com/Azure/azure-webjobs-sdk-script/wiki/Precompiled-functions). The project is a regular  ASP.NET Web Application project. With a few tweaks, you can run and debug the project locally using the [Azure Functions CLI](https://www.npmjs.com/package/azure-functions-cli). (See intructions below.)
+* This sample uses the new [precompiled function feature](https://github.com/Azure/azure-webjobs-sdk-script/wiki/Precompiled-functions). The project also uses WebJobs attributes instead of `function.json`. Use the `FunctionName` attribute to provide the name that will appear in the portal.
 
-* The function is triggered when a new .jpg file appears in the container in the app setting/environment variable `input-container`. See [function\.json](https://github.com/lindydonna/CoderCardsV2/blob/master/CoderCardsWebsite/CardGenerator/function.json#L9).
+* There are two versions of the project:
+   * [CoderCards.csproj](CoderCards/CoderCards.csproj), which requires Visual Studio 2017 Update 3 and the Azure Functions Tools VSIX. When the project is built, the file `function.json` is generated in the build output folder.
+   * [CoderCardsWebProj.csproj](CoderCardsWebProj/CoderCardsWebProj.csproj), which is a regular web project. To convert attributes to `function.json`, it runs [Runner.exe](CoderCardsWebProj/build-task/Runner.exe) as a post-build step. To make the project runnable with F5, you must modify the project start action to launch the [Azure Functions Core Tools](https://www.npmjs.com/package/azure-functions-core-tools). (See intructions below.) 
 
-* Based on an input image, one of 4 card templates is chosen based on emotion
+* There are two functions defined in this project:
+  * **RequestImageProcessing**. HTTP trigger that writes a queue message. The request payload must be in the following form:
 
-* The **filename** of the input image is used to draw the name and title on the card. 
+  ```json
+      {
+        "PersonName": "Scott Guthrie",
+        "Title": "Red Polo Connoisseur",
+        "BlobName": "Scott Guthrie-Red Polo Connoisseur.jpg"
+      }
+  ```
 
-* In order for the name and title to be drawn, the **filename must be in the form `Name of person-Title of person.jpg`**
-
-* A score based on the predominant emotion (e.g., anger, happiness) is drawn on the top
-
-* The card is written to the output blob container specified by the app setting `output-container`. See [function\.json](https://github.com/lindydonna/CoderCardsV2/blob/master/CoderCardsWebsite/CardGenerator/function.json#L15).
-
+  * **GenerateCard**. Queue trigger that binds to the blob specified in the BlobName property of the queue payload. Based on the predominant emotion of the input image, it generates a card using one of 4 card templates.
+     
+     * The card is written to the output blob container specified by the app setting `output-container`. 
 
 ## Required App Settings 
 
@@ -25,6 +31,7 @@ This is a precompiled function version of the Azure Functions sample [CoderCards
 |-----                | ------|
 | AzureWebJobsStorage | Storage account connection string |
 | EmotionAPIKey       | Key for [Cognitive Services Emotion API](https://www.microsoft.com/cognitive-services/en-us/emotion-api) |
+| input-queue         |  Name of Storage queue for to trigger card generation. Use a value like "local-queue" locally and "input-queue" on Azure
 | input-container     | Name of Storage container for input images. Use a value like "local-card-input" locally and "card-input" on Azure |
 | output-container     | Name of Storage container for output images. Use a value like "local-card-output" locally and "card-output" on Azure |
 | HOME                | Set to "." when running locally. Is automatically set on Azure |
@@ -32,24 +39,36 @@ This is a precompiled function version of the Azure Functions sample [CoderCards
 
 ## Local debugging in Visual Studio 
 
-Since the project is a Web App, by default F5 will launch IIS Express. With a few simple changes to the project settings, you can run the Azure Functions CLI and attach a debugger: 
+- If you're using Visual Studio 2017 Update 3 and the Azure Functions Tools VSIX, open the project [CoderCards.csproj](CoderCards/CoderCards.csproj). F5 will automatically launch the Azure Functions Core tools.
 
-- Right-click **CoderCardsWebsite** and open **Properties**. 
-- In the **Web** tab, choose **Start External Program**
-- For the program path, enter the path to `func.exe` for the Azure Functions CLI. 
+- If you're using [CoderCardsWebProj.csproj](CoderCardsWebProj/CoderCardsWebProj.csproj), you must customize the project start action to launch the Azure Functions Core tools. See screenshot below.
 
-  - If you've installed the [Visual Studio Tools for Azure Functions](https://aka.ms/functionsvstools), the path will look something like `C:\Users\USERNAME\AppData\Local\Azure.Functions.Cli\1.0.0-beta.91\func.exe`
-  - If you've installed the Azure Functions CLI through NPM, the path will be something like `C:\Users\USERNAME\AppData\Roaming\npm\node_modules\azure-functions-cli\bin\func.exe`
-- For **Command line arguments** set `host start`
-- For Working directory, specify the root of the project `CoderCardsWebsite` on your machine.
+    1. Install the [Azure Functions Core Tools](https://www.npmjs.com/package/azure-functions-core-tools) from npm. 
+    2. Right-click **CoderCardsWebProj** and open **Properties**. 
+    3. In the **Web** tab, choose **Start External Program**
+    4. For the program path, enter the path to `func.exe` for the Azure Functions CLI. The path will be similar to like `C:\Users\USERNAME\AppData\Roaming\npm\node_modules\azure-functions-cli\bin\func.exe`
+    5. For **Command line arguments** set `host start --cors *`
+    6. For Working directory, specify the root of the project `CoderCardsWebProj` on your machine.
 
-![Start external program settings](https://cloud.githubusercontent.com/assets/4260261/23055872/1d889b4e-f49d-11e6-9a58-42f42c9d02f3.png)
+  ![Start external program settings](https://cloud.githubusercontent.com/assets/4260261/23055872/1d889b4e-f49d-11e6-9a58-42f42c9d02f3.png)
 
 ## Running the demo
 
-1. Choose images that are **square** with a filename in the form `Name of person-Title of person.jpg`. The filename is parsed to produce text on the card.
+### Running using the provided SPA webpage
 
-2. Drop images into the `card-input` container. Once the function runs, you'll see generated cards in `card-output`.
+TBD
+
+### Running manually 
+1. Choose images that are **square** and upload to the `card-input` container.
+2. Send an HTTP request using Postman or CURL, specifying the path of the blob you just uploaded:
+
+    ```json
+    {
+      "PersonName": "My Name", 
+      "Title": "My Title",
+      "BlobName": "BlobFilename.jpg"
+    }
+    ```
 
 ## Notes
 
@@ -59,16 +78,10 @@ Since the project is a Web App, by default F5 will launch IIS Express. With a fe
 
 ## Talking points about Azure Functions
 
-* The code is triggered off a new blob in a container. We automatically get a binding for both the byte array and the blob name
+* Creating an HTTP trigger that writes a queue message is just one line of code!
 
-* The blob name is used to generate the text on the image
+* Using a queue message to trigger blob processing is preferable to a blob trigger, as it is easier to ensure transactional processing. Also, blob triggers can be delayed for up to 10 minutes on the Consumption plan.
 
-* The input binding is just a byte array, which makes it easy to manipulate with memory streams (no need to create new ones)
+* By binding to a POCO, you can use the payload of a trigger to configure an input binding. In this example, we binding to the `BlobName` property in the queue message.
 
-* Other binding types for C# are Stream, CloudBlockBlob, etc, which is very flexible.
-
-* The output binding is just a stream that you just write to
-
-* This is a very declarative model, details of binding are in a separate json file that can be edited manually or through the Integrate UX
-
-* In general, functions will scale based on the amount of events in input. A real system would probably use something like Azure Queue or Service Bus triggers, in order to track messages more closely.
+* The input binding is just a byte array, which makes it easy to manipulate with memory streams (no need to create new ones). Other binding types for C# are Stream, CloudBlockBlob, etc, which is very flexible. The output binding is just a stream that you just write to.
