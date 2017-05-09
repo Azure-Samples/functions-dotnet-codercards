@@ -91,6 +91,8 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
 call :ExecuteCmd "%HOME%\site\Repository\CoderCardsWebProj\build-task\Runner.exe" "%HOME%\site\wwwroot\CoderCardsWebProj.dll" "%HOME%\site\wwwroot"
   IF !ERRORLEVEL! NEQ 0 goto error
 
+copy "%DEPLOYMENT_SOURCE%\CoderCards\proxies.json" "%DEPLOYMENT_TARGET%\proxies.json"
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 goto end
 
