@@ -1,0 +1,10 @@
+{
+  "name": "client",
+  "scripts": {
+    "start": "live-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "live-server":"1.2.0"
+  }
+}

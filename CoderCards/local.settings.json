@@ -1,15 +1,17 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsDashboard": "",
-    "AzureWebJobsStorage": "",
+    "AzureWebJobsDashboard": "<ADD YOUR STORAGE SETTING HERE>",
+    "AzureWebJobsStorage": "<ADD YOUR STORAGE SETTING HERE>",
     "WEBSITE_NODE_DEFAULT_VERSION": "6.5.0",
     "EmotionAPIKey": "b9ce92b6cb344dcca22d8139eb562064",
-    "input-container": "local-card-input",
-    "output-container": "local-card-output",
+    "input-container": "input-local",
+    "output-container": "output-local",
     "input-queue": "local-queue",
     "HOME": ".",
-    "SITE_PATH": "."
+    "SITE_PATH": ".",
+    "SITEURL": "localhost:7071",
+    "PROXYURL": "<ADD YOUR REMOTE SITE WITH PROXY HERE>"
   },
   "ConnectionStrings": {}
 }

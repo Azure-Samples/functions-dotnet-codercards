@@ -8,6 +8,7 @@ using static CoderCardsLibrary.ImageHelpers;
 using Microsoft.Azure.WebJobs;
 using Microsoft.ProjectOxford.Emotion;
 using Microsoft.ProjectOxford.Common.Contract;
+using Microsoft.Azure.WebJobs.Extensions.Http;
 
 namespace CoderCardsLibrary
 {
@@ -42,9 +43,22 @@ namespace CoderCardsLibrary
 
         [FunctionName("RequestImageProcessing")]
         [return: Queue("%input-queue%")]
-        public static CardInfoMessage RequestImageProcessing([HttpTrigger] CardInfoMessage input, TraceWriter log)
+        public static CardInfoMessage RequestImageProcessing([HttpTrigger(AuthorizationLevel.Anonymous, new string[] { "POST" })] CardInfoMessage input, TraceWriter log)
         {
             return input;
+        }
+
+        [FunctionName("Settings")]
+        public static SettingsMessage Settings([HttpTrigger(AuthorizationLevel.Anonymous, new string[] { "GET" })] string input, TraceWriter log)
+        {
+            string stage = (Environment.GetEnvironmentVariable("STAGE") == null) ? "LOCAL" : Environment.GetEnvironmentVariable("STAGE");
+            return new SettingsMessage() {
+                Stage = stage,
+                SiteURL = ((stage == "LOCAL") ? "http://": "https://") + Environment.GetEnvironmentVariable("SITEURL"),
+                ProxyURL = "https://" + Environment.GetEnvironmentVariable("PROXYURL"),
+                InputContainerName = Environment.GetEnvironmentVariable("input-container"),
+                OutputContainerName = Environment.GetEnvironmentVariable("output-container")
+            };
         }
 
         static Image GetCardImageAndScores(EmotionScores scores, out double score)
@@ -112,6 +126,15 @@ namespace CoderCardsLibrary
                 filename);
 
             return Path.GetFullPath(path);
+        }
+
+        public class SettingsMessage
+        {
+            public string Stage { get; set; }
+            public string SiteURL { get; set; }
+            public string ProxyURL { get; set; }
+            public string InputContainerName { get; set; }
+            public string OutputContainerName { get; set; }
         }
 
         #endregion
