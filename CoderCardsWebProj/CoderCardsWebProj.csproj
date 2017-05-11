@@ -203,6 +203,7 @@
     </Content>
     <Content Include="..\CoderCards\local.settings.json">
       <Link>local.settings.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
