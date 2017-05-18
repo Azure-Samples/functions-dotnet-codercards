@@ -201,7 +201,8 @@
             // Constants which will be fetched from Functions endpoints
             let STAGE;
             let SITEURL;
-            let PROXYURL;
+            let STORAGE_URL ;
+            let CONTAINER_SAS;
             let INPUTCONTAINERNAME;
             let OUTPUTCONTAINERNAME;
 
@@ -215,7 +216,7 @@
                         // This shouldn't be used since we cancel all uploads 
                         // via Dropzone and hijack them for our own upload
                         // since Dropzone uses multi-part uploads :(
-                        return `${PROXYURL}/upload/${INPUTCONTAINERNAME}/${files[0].name}`;
+                        return `${STORAGE_URL}${INPUTCONTAINERNAME}/${files[0].name}${CONTAINER_SAS}`;
                     },
                     headers: {
                         "x-ms-blob-type": "BlockBlob",
@@ -286,7 +287,7 @@
                 const title = prompt("What's their title?");
                 const name = generateUUID() + '.jpg'
                 const xhr = new XMLHttpRequest();
-                xhr.open("PUT", `${PROXYURL}/upload/${INPUTCONTAINERNAME}/${name}`);
+                xhr.open("PUT", `${STORAGE_URL}${INPUTCONTAINERNAME}/${name}${CONTAINER_SAS}`);
                 xhr.setRequestHeader('x-ms-blob-type', 'BlockBlob');
                 xhr.setRequestHeader('Content-Type', 'image/jpeg');
                 xhr.send(file);
@@ -320,7 +321,7 @@
 
             function getImage(name, imageId, cb) {
                 const xhr = new XMLHttpRequest();
-                const imageUrl = `${PROXYURL}/card/${OUTPUTCONTAINERNAME}/${name}`;
+                const imageUrl = `${STORAGE_URL}${OUTPUTCONTAINERNAME}/${name}`;
                 xhr.open("GET", imageUrl);
                 xhr.responseType = "blob";
                 xhr.onload = (e) => {
@@ -382,7 +383,8 @@
                         }
                         STAGE = response.Stage;
                         SITEURL = response.SiteURL;
-                        PROXYURL = response.ProxyURL;
+                        STORAGE_URL = response.StorageURL;
+                        CONTAINER_SAS = response.ContainerSAS;
                         INPUTCONTAINERNAME = response.InputContainerName;
                         OUTPUTCONTAINERNAME = response.OutputContainerName;
                         updateTitle();

@@ -55,7 +55,8 @@ namespace CoderCardsLibrary
             return new SettingsMessage() {
                 Stage = stage,
                 SiteURL = ((stage == "LOCAL") ? "http://": "https://") + Environment.GetEnvironmentVariable("SITEURL"),
-                ProxyURL = "https://" + Environment.GetEnvironmentVariable("PROXYURL"),
+                StorageURL = Environment.GetEnvironmentVariable("STORAGE_URL"),
+                ContainerSAS = Environment.GetEnvironmentVariable("CONTAINER_SAS"),
                 InputContainerName = Environment.GetEnvironmentVariable("input-container"),
                 OutputContainerName = Environment.GetEnvironmentVariable("output-container")
             };
@@ -132,7 +133,8 @@ namespace CoderCardsLibrary
         {
             public string Stage { get; set; }
             public string SiteURL { get; set; }
-            public string ProxyURL { get; set; }
+            public string StorageURL { get; set; }
+            public string ContainerSAS { get; set; }
             public string InputContainerName { get; set; }
             public string OutputContainerName { get; set; }
         }

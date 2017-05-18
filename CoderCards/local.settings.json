@@ -1,8 +1,8 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsDashboard": "<ADD YOUR STORAGE SETTING HERE>",
-    "AzureWebJobsStorage": "<ADD YOUR STORAGE SETTING HERE>",
+    "AzureWebJobsDashboard": "",
+    "AzureWebJobsStorage": "",
     "WEBSITE_NODE_DEFAULT_VERSION": "6.5.0",
     "EmotionAPIKey": "b9ce92b6cb344dcca22d8139eb562064",
     "input-container": "input-local",
@@ -11,7 +11,8 @@
     "HOME": ".",
     "SITE_PATH": ".",
     "SITEURL": "localhost:7071",
-    "PROXYURL": "<ADD YOUR REMOTE SITE WITH PROXY HERE>"
+    "STORAGE_URL": "",
+    "CONTAINER_SAS": ""
   },
   "ConnectionStrings": {}
 }
