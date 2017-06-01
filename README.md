@@ -25,6 +25,19 @@ This is a precompiled function version of the Azure Functions sample [CoderCards
      
      * The card is written to the output blob container specified by the app setting `output-container`. 
 
+## Setup
+
+There's a Python setup script [setup.py](setup.py) that uses the Azure CLI 2.0 to automate the storage account setup. Run the following commands:
+
+```
+az login
+python setup.py
+```
+
+This will modify the file [local.settings.json](CoderCards/local.settings.json). 
+
+Alternatively, you can run the script from the Azure Cloud Shell in the Azure Portal. Just run `python` and paste the script. The script prints out settings values that you can use to manually modify `local.settings.json`. 
+
 ## Required App Settings 
 
 | Key                 | Description |
@@ -56,7 +69,12 @@ This is a precompiled function version of the Azure Functions sample [CoderCards
 
 ### Running using the provided SPA webpage
 
-TBD
+Make sure the functions host is running locally via Visual Studio or the Azure Functions Core Tools.
+
+In a command prompt, go to the `CoderCardsClient` directory.
+
+- Run `npm install`
+- Run `npm start`. This will launch a webpage at `http://127.0.0.1:8080/`. Navigate instead to `http://localhost:8080`.
 
 ### Running manually 
 1. Choose images that are **square** and upload to the `card-input` container.
