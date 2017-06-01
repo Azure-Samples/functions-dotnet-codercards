@@ -33,13 +33,12 @@
     <PackageReference Include="Microsoft.Data.Edm" version="5.6.4" />
     <PackageReference Include="Microsoft.Data.OData" version="5.6.4" />
     <PackageReference Include="Microsoft.Data.Services.Client" version="5.6.4" />
-    <PackageReference Include="Microsoft.NET.Sdk.Publish" Version="1.0.0-alpha-20161104-2-112" />
     <PackageReference Include="Microsoft.ProjectOxford.Emotion" Version="1.0.336" />
     <PackageReference Include="Microsoft.ProjectOxford.Common" Version="1.0.324" />
     <PackageReference Include="Newtonsoft.Json" version="9.0.1" />
     <PackageReference Include="System.Spatial" version="5.6.4" />
     <PackageReference Include="WindowsAzure.Storage" version="7.2.1" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" version="1.0.0-alpha2" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" version="1.0.0-alpha5" />
  
   </ItemGroup>
 

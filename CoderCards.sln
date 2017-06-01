@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26502.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoderCards", "CoderCards.csproj", "{528146A4-9809-4CE6-BE9C-EF09441C1EE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoderCards", "CoderCards\CoderCards.csproj", "{528146A4-9809-4CE6-BE9C-EF09441C1EE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
