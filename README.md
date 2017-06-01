@@ -54,16 +54,7 @@ Alternatively, you can run the script from the Azure Cloud Shell in the Azure Po
 
 - If you're using Visual Studio 2017 Update 3 and the Azure Functions Tools VSIX, open the project [CoderCards.csproj](CoderCards/CoderCards.csproj). F5 will automatically launch the Azure Functions Core tools.
 
-- If you're using [CoderCardsWebProj.csproj](CoderCardsWebProj/CoderCardsWebProj.csproj), you must customize the project start action to launch the Azure Functions Core tools. See screenshot below.
-
-    1. Install the [Azure Functions Core Tools](https://www.npmjs.com/package/azure-functions-core-tools) from npm. 
-    2. Right-click **CoderCardsWebProj** and open **Properties**. 
-    3. In the **Web** tab, choose **Start External Program**
-    4. For the program path, enter the path to `func.exe` for the Azure Functions CLI. The path will be similar to like `C:\Users\USERNAME\AppData\Roaming\npm\node_modules\azure-functions-cli\bin\func.exe`
-    5. For **Command line arguments** set `host start --cors *`
-    6. For Working directory, specify the root of the project `CoderCardsWebProj` on your machine.
-
-  ![Start external program settings](https://cloud.githubusercontent.com/assets/4260261/23055872/1d889b4e-f49d-11e6-9a58-42f42c9d02f3.png)
+- If you're using [CoderCardsWebProj.csproj](CoderCardsWebProj/CoderCardsWebProj.csproj), you must customize the project start action to launch the Azure Functions Core tools. See instructions at https://aka.ms/precompiled-functions.
 
 ## Running the demo
 
