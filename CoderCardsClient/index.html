@@ -382,7 +382,7 @@
                             response = JSON.parse(xhr.response);
                         }
                         STAGE = response.Stage;
-                        SITEURL = response.SiteURL;
+                        SITEURL = isLocal ? response.SiteURL : "";
                         STORAGE_URL = response.StorageURL;
                         CONTAINER_SAS = response.ContainerSAS;
                         INPUTCONTAINERNAME = response.InputContainerName;

@@ -3,7 +3,7 @@
     "proxies": {
       "root": {
         "matchCondition": {
-          "route": "index.html"
+          "route": "/"
         },
         "backendUri": "https://%STORAGE_URL%/content/index.html"
       }
