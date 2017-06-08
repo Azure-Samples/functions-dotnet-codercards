@@ -54,7 +54,7 @@ namespace CoderCardsLibrary
             string stage = (Environment.GetEnvironmentVariable("STAGE") == null) ? "LOCAL" : Environment.GetEnvironmentVariable("STAGE");
             return new SettingsMessage() {
                 Stage = stage,
-                SiteURL = ((stage == "LOCAL") ? "http://": "https://") + Environment.GetEnvironmentVariable("SITEURL"),
+                SiteURL = Environment.GetEnvironmentVariable("SITEURL"),
                 StorageURL = Environment.GetEnvironmentVariable("STORAGE_URL"),
                 ContainerSAS = Environment.GetEnvironmentVariable("CONTAINER_SAS"),
                 InputContainerName = Environment.GetEnvironmentVariable("input-container"),
