@@ -5,8 +5,8 @@ This is a precompiled function version of the Azure Functions sample [CoderCards
 ## About the sample
 
 * This sample uses the [precompiled function feature](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-class-library). The project also uses WebJobs attributes instead of `function.json`. Use the `FunctionName` attribute to provide the name that will appear in the portal.
-
-* The project [CoderCards.csproj](CoderCards/CoderCards.csproj), requires Visual Studio 2017 Update 3 and the Azure Functions Tools VSIX, available. For install instructions, see https://aka.ms/vs2017FunctionTools. When the project is built, the file `function.json` is generated in the build output folder.
+ 
+* The project [CoderCards.csproj](CoderCards/CoderCards.csproj), requires Visual Studio 2017 Preview Update 3 and the Azure Functions Tools VSIX, available. For install instructions, see https://aka.ms/vs2017FunctionTools. When the project is built, the file `function.json` is generated in the build output folder.
 
 * There are two functions defined in this project:
   * **RequestImageProcessing**. HTTP trigger that writes a queue message. The request payload must be in the following form:
