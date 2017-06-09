@@ -22,6 +22,7 @@ isLocal        = str2bool(sys.argv[3]) # local or prod containers
 
 containerInput    = "input-local"  if isLocal else "card-input"
 containerOutput   = "output-local" if isLocal else "card-output"
+queueName         = "local-queue"  if isLocal else "input-queue"
 
 # Retrieve the Storage Account connection string 
 connstr = runCommand('az storage account show-connection-string --name {} --resource-group {} --query connectionString --output tsv'.format(storageName, resourceGroup))
@@ -66,6 +67,10 @@ with open(settingsFilename, 'r') as file:
 filedata = filedata.replace('"AzureWebJobsStorage": ""', settingAzureWebJobsStorage) \
                    .replace('"STORAGE_URL": ""',         settingStorageUrl) \
                    .replace('"CONTAINER_SAS": ""',       settingContainerSas)
+
+filedata = re.sub(r'"input-container": .*,',  '"input-container": "{}",'.format(containerInput), filedata)
+filedata = re.sub(r'"output-container": .*,', '"output-container": "{}",'.format(containerOutput), filedata)
+filedata = re.sub(r'"input-queue": .*,',      '"input-queue": "{}",'.format(queueName), filedata)
 
 with open(settingsFilename, 'w') as file:
     file.write(filedata)
