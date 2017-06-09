@@ -5,7 +5,7 @@
         "matchCondition": {
           "route": "/"
         },
-        "backendUri": "https://%STORAGE_URL%/content/index.html"
+        "backendUri": "%STORAGE_URL%content/index.html"
       }
     }
 }
