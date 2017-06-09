@@ -8,9 +8,7 @@
     "input-container": "input-local",
     "output-container": "output-local",
     "input-queue": "local-queue",
-    "HOME": ".",
-    "SITE_PATH": ".",
-    "SITEURL": "localhost:7071",
+    "SITEURL": "http://localhost:7071",
     "STORAGE_URL": "",
     "CONTAINER_SAS": ""
   },

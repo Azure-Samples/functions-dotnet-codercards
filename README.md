@@ -4,11 +4,9 @@ This is a precompiled function version of the Azure Functions sample [CoderCards
 
 ## About the sample
 
-* This sample uses the new [precompiled function feature](https://github.com/Azure/azure-webjobs-sdk-script/wiki/Precompiled-functions). The project also uses WebJobs attributes instead of `function.json`. Use the `FunctionName` attribute to provide the name that will appear in the portal.
+* This sample uses the [precompiled function feature](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-class-library). The project also uses WebJobs attributes instead of `function.json`. Use the `FunctionName` attribute to provide the name that will appear in the portal.
 
-* There are two versions of the project:
-   * [CoderCards.csproj](CoderCards/CoderCards.csproj), which requires Visual Studio 2017 Update 3 and the Azure Functions Tools VSIX. When the project is built, the file `function.json` is generated in the build output folder.
-   * [CoderCardsWebProj.csproj](CoderCardsWebProj/CoderCardsWebProj.csproj), which is a regular web project. To convert attributes to `function.json`, it runs [Runner.exe](CoderCardsWebProj/build-task/Runner.exe) as a post-build step. To make the project runnable with F5, you must modify the project start action to launch the [Azure Functions Core Tools](https://www.npmjs.com/package/azure-functions-core-tools). (See intructions below.) 
+* The project [CoderCards.csproj](CoderCards/CoderCards.csproj), requires Visual Studio 2017 Update 3 and the Azure Functions Tools VSIX, available. For install instructions, see https://aka.ms/vs2017FunctionTools. When the project is built, the file `function.json` is generated in the build output folder.
 
 * There are two functions defined in this project:
   * **RequestImageProcessing**. HTTP trigger that writes a queue message. The request payload must be in the following form:
@@ -27,18 +25,20 @@ This is a precompiled function version of the Azure Functions sample [CoderCards
 
 ## Setup
 
-There's a Python setup script [setup.py](setup.py) that uses the Azure CLI 2.0 to automate the storage account setup. Run the following commands:
+### Setup script
+
+Use the Python setup script [setup.py](setup.py). This uses the Azure CLI 2.0 to automate the storage account setup. Run the following commands:
 
 ```
 az login
-python setup.py
+python setup.py storage-account resource-group true
 ```
 
-This will modify the file [local.settings.json](CoderCards/local.settings.json). 
+This will modify the file [local.settings.json](CoderCards/local.settings.json). The last argument controls whether to create containers prefixed with "local".
 
 Alternatively, you can run the script from the Azure Cloud Shell in the Azure Portal. Just run `python` and paste the script. The script prints out settings values that you can use to manually modify `local.settings.json`. 
 
-## Required App Settings 
+### Required App Settings 
 
 | Key                 | Description |
 |-----                | ------|
@@ -47,14 +47,22 @@ Alternatively, you can run the script from the Azure Cloud Shell in the Azure Po
 | input-queue         |  Name of Storage queue for to trigger card generation. Use a value like "local-queue" locally and "input-queue" on Azure
 | input-container     | Name of Storage container for input images. Use a value like "local-card-input" locally and "card-input" on Azure |
 | output-container     | Name of Storage container for output images. Use a value like "local-card-output" locally and "card-output" on Azure |
-| HOME                | Set to "." when running locally. Is automatically set on Azure |
-| SITE_PATH           | Use "." when running locally. Use `site\\wwwroot` on Azure |
+| SITEURL              | Set to `http://localhost:7071` locally. Not required on Azure. |
+| STORAGE_URL          | URL of storage account, in the form `https://accountname.blob.core.windows.net/` |
+| CONTAINER_SAS        | SAS token for uploading to input-container. Include the "?" prefix. |
+
+If you want to set these values in Azure, you can set them in *local.settings.json* and use the Azure Functions Core Tools to publish to Azure.
+
+```
+python setup.py storage-account resource-group false
+func azure functionapp publish function-app-name --publish-app-settings
+```
 
 ## Local debugging in Visual Studio 
 
 - If you're using Visual Studio 2017 Update 3 and the Azure Functions Tools VSIX, open the project [CoderCards.csproj](CoderCards/CoderCards.csproj). F5 will automatically launch the Azure Functions Core tools.
 
-- If you're using [CoderCardsWebProj.csproj](CoderCardsWebProj/CoderCardsWebProj.csproj), you must customize the project start action to launch the Azure Functions Core tools. See instructions at https://aka.ms/precompiled-functions.
+- The project has a custom launchSettings.json that passes these arguments to the Functions Core Tools: `host start --cors * --pause-on-error`.
 
 ## Running the demo
 
@@ -94,3 +102,11 @@ In a command prompt, go to the `CoderCardsClient` directory.
 * By binding to a POCO, you can use the payload of a trigger to configure an input binding. In this example, we binding to the `BlobName` property in the queue message.
 
 * The input binding is just a byte array, which makes it easy to manipulate with memory streams (no need to create new ones). Other binding types for C# are Stream, CloudBlockBlob, etc, which is very flexible. The output binding is just a stream that you just write to.
+
+## Next steps
+
+For more information about the Azure Functions Visual Studio tooling, see the following:
+
+- [Visual Studio 2017 Tools for Azure Functions](https://blogs.msdn.microsoft.com/webdev/2017/05/10/azure-function-tools-for-visual-studio-2017/)
+- [Using \.NET class libraries with Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-class-library)
+- Video: [Azure Functions Visual Studio Tooling](https://www.youtube.com/watch?v=BN2sIRrOt8A)

@@ -19,7 +19,8 @@ namespace CoderCardsLibrary
         public static async Task GenerateCard(
             [QueueTrigger("%input-queue%")] CardInfoMessage cardInfo,
             [Blob("%input-container%/{BlobName}", FileAccess.Read)] byte[] image, 
-            [Blob("%output-container%/{BlobName}", FileAccess.Write)] Stream outputBlob, TraceWriter log)
+            [Blob("%output-container%/{BlobName}", FileAccess.Write)] Stream outputBlob, 
+            TraceWriter log, ExecutionContext context)
         {
             Emotion[] faceDataArray = await RecognizeEmotionAsync(image, log);
 
@@ -34,7 +35,7 @@ namespace CoderCardsLibrary
             }
 
             var faceData = faceDataArray[0]; 
-            var card = GetCardImageAndScores(faceDataArray[0].Scores, out double score); // assume exactly one face
+            var card = GetCardImageAndScores(faceDataArray[0].Scores, out double score, context.FunctionDirectory); // assume exactly one face
 
             MergeCardImage(card, image, cardInfo.PersonName, cardInfo.Title, score);
 
@@ -62,7 +63,7 @@ namespace CoderCardsLibrary
             };
         }
 
-        static Image GetCardImageAndScores(EmotionScores scores, out double score)
+        static Image GetCardImageAndScores(EmotionScores scores, out double score, string functionDirectory)
         {
             NormalizeScores(scores);
 
@@ -83,10 +84,14 @@ namespace CoderCardsLibrary
                 score = scores.Happiness * happyBoost;
             }
 
-            return Image.FromFile(GetFullImagePath(cardBack));
+            var path = Path.Combine(functionDirectory, "..\\", AssetsFolderLocation, cardBack);
+            return Image.FromFile(Path.GetFullPath(path));
         }
 
         #region Helpers
+
+        private const string EmotionAPIKeyName = "EmotionAPIKey";
+        private const string AssetsFolderLocation = "assets";
 
         public class CardInfoMessage
         {
@@ -113,20 +118,6 @@ namespace CoderCardsLibrary
                 return null;
             }
 
-        }
-
-        private const string EmotionAPIKeyName = "EmotionAPIKey";
-        private const string AssetsFolderLocation = "assets";
-
-        static string GetFullImagePath(string filename)
-        {
-            var path = Path.Combine(
-                Environment.GetEnvironmentVariable("HOME"), 
-                Environment.GetEnvironmentVariable("SITE_PATH"), 
-                AssetsFolderLocation,
-                filename);
-
-            return Path.GetFullPath(path);
         }
 
         public class SettingsMessage
