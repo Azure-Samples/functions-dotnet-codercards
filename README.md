@@ -36,7 +36,7 @@ There's also a C# script version of this sample: [CoderCards](https://github.com
 
 Here's a visualization of the bindings, using the [Azure Functions Bindings Visualizer](https://functions-visualizer.azurewebsites.net):
 
-![Functions bindings](function-bindings.svg)
+![Functions bindings](function-bindings.png)
 
 ## Setup
 
