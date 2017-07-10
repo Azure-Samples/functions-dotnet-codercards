@@ -34,6 +34,10 @@ There's also a C# script version of this sample: [CoderCards](https://github.com
      
      * The card is written to the output blob container specified by the app setting `output-container`. 
 
+Here's a visualization of the bindings, using the [Azure Functions Bindings Visualizer](https://functions-visualizer.azurewebsites.net):
+
+![Functions bindings](function-bindings.svg)
+
 ## Setup
 
 ### Setup script
