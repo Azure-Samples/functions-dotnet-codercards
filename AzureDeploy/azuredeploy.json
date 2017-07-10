@@ -21,20 +21,30 @@
         "description": "Storage Account type"
       }
     },
-    "emotionAPIKey": {
-      "type": "string"
-    },
     "repoUrl": {
       "type": "string"
     }
   },
   "variables": {
-    "functionAppName": "[parameters('appName')]",
-    "hostingPlanName": "[parameters('appName')]",
-    "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'azfunctions')]",
-    "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
+    "functionAppName": "[concat(parameters('appName'), substring(uniquestring(resourceGroup().id), 0, 6))]",
+    "hostingPlanName": "[concat(parameters('appName'), substring(uniquestring(resourceGroup().id), 0, 6))]",
+    "storageAccountName": "[concat(substring(uniquestring(resourceGroup().id), 0, 6), 'azfunctions')]",
+    "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+    "cognitiveAccountName": "[concat(parameters('appName'),'emotion')]"
   },
   "resources": [
+    {
+      "type": "Microsoft.CognitiveServices/accounts",
+      "sku": {
+        "name": "S0"
+      },
+      "kind": "Emotion",
+      "name": "[variables('cognitiveAccountName')]",
+      "apiVersion": "2017-04-18",
+      "location": "[resourceGroup().location]",
+      "properties": {},
+      "dependsOn": []
+    },
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('storageAccountName')]",
@@ -63,7 +73,8 @@
       "kind": "functionapp",
       "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+        "[resourceId('Microsoft.CognitiveServices/accounts/', variables('cognitiveAccountName'))]"
       ],
       "properties": {
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
@@ -95,7 +106,7 @@
             },
             {
               "name": "EmotionAPIKey",
-              "value": "[parameters('emotionAPIKey')]"
+              "value": "[listKeys(concat(resourceGroup().id,'/providers/Microsoft.CognitiveServices/accounts/', variables('cognitiveAccountName')),'2016-02-01-preview').key1]"
             },
             {
               "name": "input-container",
