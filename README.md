@@ -1,12 +1,23 @@
-# CoderCards - Class Libary Version
+# CoderCards - C# class library version
 
-This is a precompiled function version of the Azure Functions sample [CoderCards](https://github.com/lindydonna/codercards).
+CoderCards is a geek trading card generator. It uses Microsoft Cognitive Services to detect the predominant emotion in a face, which is used to choose a card back.
+
+The sample demonstrates the following features
+- C# attributes and Visual Studio 2017 tooling
+- Functions backing a SPA, hosted in Azure Storage
+- Azure Functions proxies to customize the site index.html
+
+There's also a C# script version of this sample: [CoderCards](https://github.com/lindydonna/codercards).
+
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fgithub.com%2Flindydonna%2FCoderCardsV2%2Fblob%2Fmaster%2FAzureDeploy%2Fazuredeploy.json)
+
+## Prerequisites
+
+* To build the functions project, use [Visual Studio 15.3 Preview](https://www.visualstudio.com/vs/preview/) and the [Azure Functions Tooling VSIX](https://marketplace.visualstudio.com/items?itemName=AndrewBHall-MSFT.AzureFunctionToolsforVisualStudio2017).
+
+* To run the setup script, install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli). 
 
 ## About the sample
-
-* This sample uses the [precompiled function feature](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-class-library). The project also uses WebJobs attributes instead of `function.json`. Use the `FunctionName` attribute to provide the name that will appear in the portal.
- 
-* The project [CoderCards.csproj](CoderCards/CoderCards.csproj), requires Visual Studio 2017 Preview Update 3 and the Azure Functions Tools VSIX, available. For install instructions, see https://aka.ms/vs2017FunctionTools. When the project is built, the file `function.json` is generated in the build output folder.
 
 * There are two functions defined in this project:
   * **RequestImageProcessing**. HTTP trigger that writes a queue message. The request payload must be in the following form:
@@ -76,7 +87,7 @@ In a command prompt, go to the `CoderCardsClient` directory.
 - Run `npm start`. This will launch a webpage at `http://127.0.0.1:8080/`. Navigate instead to `http://localhost:8080`.
 
 ### Running manually 
-1. Choose images that are **square** and upload to the `card-input` container.
+1. Choose images that are **square** and upload to the `card-input` container. (Images that aren't square will be stretched.)
 2. Send an HTTP request using Postman or CURL, specifying the path of the blob you just uploaded:
 
     ```json
@@ -89,7 +100,7 @@ In a command prompt, go to the `CoderCardsClient` directory.
 
 ## Notes
 
-* The demo uses System.Drawing, which is NOT recommended for production apps. To learn more, see [Why you should not use System\.Drawing from ASP\.NET applications](http://www.asprangers.com/post/2012/03/23/Why-you-should-not-use-SystemDrawing-from-ASPNET-applications.aspx).
+* The demo uses System.Drawing, which is NOT recommended for production apps. To learn more, see [5 Reasons You Should Stop Using System\.Drawing from ASP\.NET](http://photosauce.net/blog/post/5-reasons-you-should-stop-using-systemdrawing-from-aspnet).
 
 * Happy faces get a multiplier of 4, angry gets a multiplier of 2. I encourage you to tweak for maximum comedic effect!
 
@@ -97,7 +108,7 @@ In a command prompt, go to the `CoderCardsClient` directory.
 
 * Creating an HTTP trigger that writes a queue message is just one line of code!
 
-* Using a queue message to trigger blob processing is preferable to a blob trigger, as it is easier to ensure transactional processing. Also, blob triggers can be delayed for up to 10 minutes on the Consumption plan.
+* Using a queue message to trigger blob processing is preferable to a blob trigger, as it is easier to ensure transactional processing. Blob triggers can be [delayed for up to 10 minutes on the Consumption plan](https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale#how-the-consumption-plan-works)
 
 * By binding to a POCO, you can use the payload of a trigger to configure an input binding. In this example, we binding to the `BlobName` property in the queue message.
 
@@ -107,6 +118,8 @@ In a command prompt, go to the `CoderCardsClient` directory.
 
 For more information about the Azure Functions Visual Studio tooling, see the following:
 
-- [Visual Studio 2017 Tools for Azure Functions](https://blogs.msdn.microsoft.com/webdev/2017/05/10/azure-function-tools-for-visual-studio-2017/)
+- [Visual Studio 2017 Tools for Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs)
 - [Using \.NET class libraries with Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-class-library)
+- [Code and test Azure functions locally](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local)
 - Video: [Azure Functions Visual Studio Tooling](https://www.youtube.com/watch?v=BN2sIRrOt8A)
+- Video: [Cloud Cover: Azure Functions Local Debugging and More with Donna Malayeri](https://channel9.msdn.com/Shows/Cloud+Cover/Episode-231-Azure-Functions-Local-Debugging-and-More-with-Donna-Malayeri)
