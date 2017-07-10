@@ -1,4 +1,10 @@
-# CoderCards - C# class library version
+---
+services: functions
+platforms: dotnet
+author: lindydonna
+---
+
+# CoderCards - trading card generator
 
 CoderCards is a geek trading card generator. It uses Microsoft Cognitive Services to detect the predominant emotion in a face, which is used to choose a card back.
 
