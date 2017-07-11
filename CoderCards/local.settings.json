@@ -4,7 +4,7 @@
     "AzureWebJobsDashboard": "",
     "AzureWebJobsStorage": "",
     "WEBSITE_NODE_DEFAULT_VERSION": "6.5.0",
-    "EmotionAPIKey": "b9ce92b6cb344dcca22d8139eb562064",
+    "EmotionAPIKey": "",
     "input-container": "input-local",
     "output-container": "output-local",
     "input-queue": "local-queue",
