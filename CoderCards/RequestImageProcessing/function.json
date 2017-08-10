@@ -1,0 +1,27 @@
+{
+  "bindings": [
+    {
+      "type": "httpTrigger",
+      "methods": [
+        "post"
+      ],
+      "authLevel": "anonymous",
+      "direction": "in",
+      "name": "input"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
+    },
+    {
+      "type": "queue",
+      "direction": "out",
+      "name": "queueOutput",
+      "queueName": "local-queue"
+    }
+  ],
+  "disabled": false,
+  "scriptFile": "../CoderCards.dll",
+  "entryPoint": "CoderCardsLibrary.CardGenerator.RequestImageProcessing"
+}

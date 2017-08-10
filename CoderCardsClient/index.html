@@ -285,7 +285,7 @@
             function uploadFile(file, cb) {
                 const personName = prompt("What name should appear on the card?");
                 const title = prompt("What's their title?");
-                const name = generateUUID() + '.jpg'
+                const name = personName + "-" + generateUUID() + '.jpg'
                 const xhr = new XMLHttpRequest();
                 xhr.open("PUT", `${STORAGE_URL}${INPUTCONTAINERNAME}/${name}${CONTAINER_SAS}`);
                 xhr.setRequestHeader('x-ms-blob-type', 'BlockBlob');
@@ -364,7 +364,7 @@
             function configureSettings(isLocal) {
                 try {
                     const xhr = new XMLHttpRequest();
-                    const URL = isLocal ? "http://localhost:7071/api/Settings" : "/api/Settings";
+                    const URL = isLocal ? "http://localhost:5000/api/Settings" : "/api/Settings";
                     xhr.open("GET", URL);
                     xhr.setRequestHeader('Content-Type', 'application/json');
                     xhr.onload = (e) => {
@@ -381,12 +381,12 @@
                         if (typeof xhr.response === "string") {
                             response = JSON.parse(xhr.response);
                         }
-                        STAGE = response.Stage;
-                        SITEURL = isLocal ? response.SiteURL : "";
-                        STORAGE_URL = response.StorageURL;
-                        CONTAINER_SAS = response.ContainerSAS;
-                        INPUTCONTAINERNAME = response.InputContainerName;
-                        OUTPUTCONTAINERNAME = response.OutputContainerName;
+                        STAGE = response.stage;
+                        SITEURL = isLocal ? response.siteURL : "";
+                        STORAGE_URL = response.storageURL;
+                        CONTAINER_SAS = response.containerSAS;
+                        INPUTCONTAINERNAME = response.inputContainerName;
+                        OUTPUTCONTAINERNAME = response.outputContainerName;
                         updateTitle();
                     }
                     xhr.send();

@@ -1,0 +1,21 @@
+{
+  "bindings": [
+    {
+      "type": "httpTrigger",
+      "methods": [
+        "GET"
+      ],
+      "authLevel": "anonymous",
+      "direction": "in",
+      "name": "input"
+    },
+    {
+      "name": "$return",
+      "type": "http",
+      "direction": "out"
+    }
+  ],
+  "disabled": false,
+  "scriptFile": "../CoderCards.dll",
+  "entryPoint": "CoderCardsLibrary.CardGenerator.Settings"
+}

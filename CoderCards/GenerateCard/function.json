@@ -1,0 +1,28 @@
+{
+  "bindings": [
+    {
+      "type": "queueTrigger",
+      "queueName": "local-queue",
+      "connection": "AzureWebJobsStorage",
+      "direction": "in",
+      "name": "cardInfo"
+    },
+    {
+      "type": "blob",
+      "path": "input-local/{BlobName}",
+      "connection": "AzureWebJobsStorage",
+      "direction": "in",
+      "name": "image"
+    },
+    {
+      "type": "blob",
+      "connection": "AzureWebJobsStorage",
+      "path": "output-local/{BlobName}",
+      "direction": "out",
+      "name": "outputBlob"
+    }
+  ],
+  "disabled": false,
+  "scriptFile": "../CoderCards.dll",
+  "entryPoint": "CoderCardsLibrary.CardGenerator.GenerateCard"
+}

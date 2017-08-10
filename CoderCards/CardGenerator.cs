@@ -3,25 +3,26 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Drawing;
 using Microsoft.Azure.WebJobs.Host;
-
-using static CoderCardsLibrary.ImageHelpers;
 using Microsoft.Azure.WebJobs;
+using Newtonsoft.Json.Linq;
+
 using Microsoft.ProjectOxford.Emotion;
 using Microsoft.ProjectOxford.Common.Contract;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 
 namespace CoderCardsLibrary
 {
-    [StorageAccount("AzureWebJobsStorage")]
     public class CardGenerator
     {
         [FunctionName("GenerateCard")]
         public static async Task GenerateCard(
-            [QueueTrigger("%input-queue%")] CardInfoMessage cardInfo,
-            [Blob("%input-container%/{BlobName}", FileAccess.Read)] byte[] image, 
-            [Blob("%output-container%/{BlobName}", FileAccess.Write)] Stream outputBlob, 
-            TraceWriter log, ExecutionContext context)
+            [QueueTrigger("local-queue")] CardInfoMessage cardInfo,
+            [Blob("input-local/{BlobName}", FileAccess.Read)] byte[] image, 
+            [Blob("output-local/{BlobName}", FileAccess.Write)] Stream outputBlob,
+            Binder binder,
+            ExecutionContext context,
+            TraceWriter log)
         {
+            // call emotion API
             Emotion[] faceDataArray = await RecognizeEmotionAsync(image, log);
 
             if (faceDataArray == null) { 
@@ -34,23 +35,36 @@ namespace CoderCardsLibrary
                 return;
             }
 
+            // choose a card back based on predominant emotion
             var faceData = faceDataArray[0]; 
-            var card = GetCardImageAndScores(faceDataArray[0].Scores, out double score, context.FunctionDirectory); // assume exactly one face
+            string cardPath = GetCardImageAndScores(faceDataArray[0].Scores, out double score, context.FunctionDirectory); // assume exactly one face
 
-            MergeCardImage(card, image, cardInfo.PersonName, cardInfo.Title, score);
+            var outputData = new JObject() {
+                { "PersonName", cardInfo.PersonName },
+                { "Title",      cardInfo.Title },
+                { "Score",      score },
+                { "Emotion",    Path.GetFileNameWithoutExtension(cardPath) }
+            };
 
-            SaveAsJpeg(card, outputBlob);
+            // write out score info
+            await WriteMetadata(binder, "output-data/{BlobName}-{rand-guid}.txt", outputData);
+
+            using (var fileStream = File.Open(cardPath, FileMode.Open)) {
+                fileStream.CopyTo(outputBlob);
+            }
         }
 
         [FunctionName("RequestImageProcessing")]
-        [return: Queue("%input-queue%")]
-        public static CardInfoMessage RequestImageProcessing([HttpTrigger(AuthorizationLevel.Anonymous, new string[] { "POST" })] CardInfoMessage input, TraceWriter log)
+        public static string RequestImageProcessing(
+            CardInfoMessage input, 
+            [Queue("local-queue")] out CardInfoMessage queueOutput)
         {
-            return input;
+            queueOutput = input;
+            return "Ok";
         }
 
         [FunctionName("Settings")]
-        public static SettingsMessage Settings([HttpTrigger(AuthorizationLevel.Anonymous, new string[] { "GET" })] string input, TraceWriter log)
+        public static SettingsMessage Settings(string input, TraceWriter log)
         {
             string stage = (Environment.GetEnvironmentVariable("STAGE") == null) ? "LOCAL" : Environment.GetEnvironmentVariable("STAGE");
             return new SettingsMessage() {
@@ -58,12 +72,24 @@ namespace CoderCardsLibrary
                 SiteURL = Environment.GetEnvironmentVariable("SITEURL"),
                 StorageURL = Environment.GetEnvironmentVariable("STORAGE_URL"),
                 ContainerSAS = Environment.GetEnvironmentVariable("CONTAINER_SAS"),
-                InputContainerName = Environment.GetEnvironmentVariable("input-container"),
-                OutputContainerName = Environment.GetEnvironmentVariable("output-container")
+                InputContainerName = "input-local",
+                OutputContainerName = "output-local"
             };
         }
 
-        static Image GetCardImageAndScores(EmotionScores scores, out double score, string functionDirectory)
+        private static async Task WriteMetadata(Binder binder, string outputPath, JObject outputData)
+        {
+            var attributes = new Attribute[] {    
+                new BlobAttribute(outputPath),
+                new StorageAccountAttribute("AzureWebJobsStorage")
+            };
+
+            using (var writer = await binder.BindAsync<TextWriter>(attributes)) {
+                writer.Write(outputData);
+            }            
+        }
+
+        static string GetCardImageAndScores(EmotionScores scores, out double score, string functionDirectory)
         {
             NormalizeScores(scores);
 
@@ -84,8 +110,8 @@ namespace CoderCardsLibrary
                 score = scores.Happiness * happyBoost;
             }
 
-            var path = Path.Combine(functionDirectory, "..\\", AssetsFolderLocation, cardBack);
-            return Image.FromFile(Path.GetFullPath(path));
+            var path = Path.Combine(functionDirectory, "../", AssetsFolderLocation, cardBack);
+            return Path.GetFullPath(path);
         }
 
         #region Helpers
@@ -104,7 +130,9 @@ namespace CoderCardsLibrary
         {
             try
             {
-                var emotionServiceClient = new EmotionServiceClient(Environment.GetEnvironmentVariable(EmotionAPIKeyName));
+                var emotionServiceClient = new EmotionServiceClient("28c7e1412c254cb584715bada6706f4d");
+
+                // log.Info($"EmotionApiKey: {Environment.GetEnvironmentVariable(EmotionAPIKeyName)}");
 
                 using (MemoryStream faceImageStream = new MemoryStream(image))
                 {
@@ -128,6 +156,17 @@ namespace CoderCardsLibrary
             public string ContainerSAS { get; set; }
             public string InputContainerName { get; set; }
             public string OutputContainerName { get; set; }
+        }
+
+        public static float RoundScore(float score) => (float)Math.Round((decimal)(score * 100), 0);
+
+        public static void NormalizeScores(EmotionScores scores)
+        {
+            scores.Anger = RoundScore(scores.Anger);
+            scores.Happiness = RoundScore(scores.Happiness);
+            scores.Neutral = RoundScore(scores.Neutral);
+            scores.Sadness = RoundScore(scores.Sadness);
+            scores.Surprise = RoundScore(scores.Surprise);
         }
 
         #endregion
