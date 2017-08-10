@@ -18,11 +18,8 @@ namespace CoderCardsLibrary
             [QueueTrigger("local-queue")] CardInfoMessage cardInfo,
             [Blob("input-local/{BlobName}", FileAccess.Read)] byte[] image, 
             [Blob("output-local/{BlobName}", FileAccess.Write)] Stream outputBlob,
-            Binder binder,
-            ExecutionContext context,
-            TraceWriter log)
+            Binder binder, ExecutionContext context, TraceWriter log)
         {
-            // call emotion API
             Emotion[] faceDataArray = await RecognizeEmotionAsync(image, log);
 
             if (faceDataArray == null) { 
@@ -39,6 +36,7 @@ namespace CoderCardsLibrary
             var faceData = faceDataArray[0]; 
             string cardPath = GetCardImageAndScores(faceDataArray[0].Scores, out double score, context.FunctionDirectory); // assume exactly one face
 
+            // write out metadata 
             var outputData = new JObject() {
                 { "PersonName", cardInfo.PersonName },
                 { "Title",      cardInfo.Title },
@@ -46,9 +44,9 @@ namespace CoderCardsLibrary
                 { "Emotion",    Path.GetFileNameWithoutExtension(cardPath) }
             };
 
-            // write out score info
             await WriteMetadata(binder, "output-data/{BlobName}-{rand-guid}.txt", outputData);
 
+            // write to output container
             using (var fileStream = File.Open(cardPath, FileMode.Open)) {
                 fileStream.CopyTo(outputBlob);
             }
