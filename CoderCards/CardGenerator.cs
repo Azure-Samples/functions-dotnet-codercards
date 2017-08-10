@@ -4,7 +4,7 @@ using System.IO;
 using System.Drawing;
 using Microsoft.Azure.WebJobs.Host;
 
-using static CoderCardsLibrary.ImageHelpers;
+using static CoderCardsLibrary.ImageHelpersXPlat;
 using Microsoft.Azure.WebJobs;
 using Microsoft.ProjectOxford.Emotion;
 using Microsoft.ProjectOxford.Common.Contract;
@@ -24,7 +24,7 @@ namespace CoderCardsLibrary
         {
             Emotion[] faceDataArray = await RecognizeEmotionAsync(image, log);
 
-            if (faceDataArray == null) { 
+            if (faceDataArray == null) {
                 log.Error("No result from Emotion API");
                 return;
             }
@@ -34,12 +34,14 @@ namespace CoderCardsLibrary
                 return;
             }
 
-            var faceData = faceDataArray[0]; 
-            var card = GetCardImageAndScores(faceDataArray[0].Scores, out double score, context.FunctionDirectory); // assume exactly one face
+            var faceData = faceDataArray[0];
 
-            MergeCardImage(card, image, cardInfo.PersonName, cardInfo.Title, score);
+            var testscores = new EmotionScores { Happiness = 1 };
+            string cardPath = GetCardImageAndScores(faceDataArray[0].Scores, out double score, context.FunctionDirectory); // assume exactly one face
 
-            SaveAsJpeg(card, outputBlob);
+            MergeCardImage(cardPath, image, outputBlob, cardInfo.PersonName, cardInfo.Title, score);
+
+            //SaveAsJpeg(card, outputBlob);
         }
 
         [FunctionName("RequestImageProcessing")]
@@ -63,7 +65,7 @@ namespace CoderCardsLibrary
             };
         }
 
-        static Image GetCardImageAndScores(EmotionScores scores, out double score, string functionDirectory)
+        static string GetCardImageAndScores(EmotionScores scores, out double score, string functionDirectory)
         {
             NormalizeScores(scores);
 
@@ -85,7 +87,7 @@ namespace CoderCardsLibrary
             }
 
             var path = Path.Combine(functionDirectory, "..\\", AssetsFolderLocation, cardBack);
-            return Image.FromFile(Path.GetFullPath(path));
+            return Path.GetFullPath(path);
         }
 
         #region Helpers
