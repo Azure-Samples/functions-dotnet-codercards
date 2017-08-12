@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <Platforms>AnyCPU;x86</Platforms>
+    <!--<RuntimeIdentifier>win7-x86</RuntimeIdentifier>-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,25 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
-    <PackageReference Include="Microsoft.Azure.KeyVault.Core" version="1.0.0" />
-    <PackageReference Include="Microsoft.Azure.WebJobs" version="2.1.0-beta1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Core" version="2.1.0-beta1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="1.0.0-beta1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.ServiceBus" Version="2.1.0-beta1" />
     <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="1.0.4" />
     <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
-    <PackageReference Include="Microsoft.Data.Edm" version="5.6.4" />
-    <PackageReference Include="Microsoft.Data.OData" version="5.6.4" />
-    <PackageReference Include="Microsoft.Data.Services.Client" version="5.6.4" />
     <PackageReference Include="Microsoft.ProjectOxford.Emotion" Version="1.0.336" />
     <PackageReference Include="Microsoft.ProjectOxford.Common" Version="1.0.324" />
-    <PackageReference Include="Newtonsoft.Json" version="9.0.1" />
     <PackageReference Include="SkiaSharp" Version="1.59.1" />
-    <PackageReference Include="System.Spatial" version="5.6.4" />
-    <PackageReference Include="WindowsAzure.Storage" version="7.2.1" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" version="1.0.0-alpha6" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" version="1.0.0" />
  
   </ItemGroup>
 
