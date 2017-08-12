@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <Platforms>AnyCPU;x86</Platforms>
-    <!--<RuntimeIdentifier>win7-x86</RuntimeIdentifier>-->
+    <RuntimeIdentifiers>win7-x86;</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
@@ -44,5 +44,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y %USERPROFILE%\.nuget\packages\skiasharp\1.59.1\build\net45\..\..\runtimes\win7-x86\native\libSkiaSharp.dll $(TargetDir)bin" />
+    <Exec Command="xcopy /y %USERPROFILE%\.nuget\packages\skiasharp\1.59.1\build\net45\..\..\runtimes\osx\native\libSkiaSharp.dylib $(TargetDir)bin" />
+  </Target>
 
 </Project>
