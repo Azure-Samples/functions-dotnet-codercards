@@ -15,9 +15,9 @@ namespace CoderCardsLibrary
     {
         [FunctionName("GenerateCard")]
         public static async Task GenerateCard(
-            [QueueTrigger("local-queue")] CardInfoMessage cardInfo,
-            [Blob("input-local/{BlobName}", FileAccess.Read)] byte[] image, 
-            [Blob("output-local/{BlobName}", FileAccess.Write)] Stream outputBlob,
+            [QueueTrigger("%input-queue%")] CardInfoMessage cardInfo,
+            [Blob("%input-container%/{BlobName}", FileAccess.Read)] byte[] image, 
+            [Blob("%output-container%/{BlobName}", FileAccess.Write)] Stream outputBlob,
             ExecutionContext context, TraceWriter log)
         {
             Emotion[] faceDataArray = await RecognizeEmotionAsync(image, log);
@@ -43,7 +43,7 @@ namespace CoderCardsLibrary
         [FunctionName("RequestImageProcessing")]
         public static string RequestImageProcessing(
             CardInfoMessage input, 
-            [Queue("local-queue")] out CardInfoMessage queueOutput)
+            [Queue("%input-queue%")] out CardInfoMessage queueOutput)
         {
             queueOutput = input;
             return "Ok";
@@ -58,8 +58,8 @@ namespace CoderCardsLibrary
                 SiteURL = Environment.GetEnvironmentVariable("SITEURL"),
                 StorageURL = Environment.GetEnvironmentVariable("STORAGE_URL"),
                 ContainerSAS = Environment.GetEnvironmentVariable("CONTAINER_SAS"),
-                InputContainerName = "input-local",
-                OutputContainerName = "output-local"
+                InputContainerName = Environment.GetEnvironmentVariable("input-container"),
+                OutputContainerName = Environment.GetEnvironmentVariable("output-container")
             };
         }
 

@@ -18,7 +18,7 @@
       "type": "queue",
       "direction": "out",
       "name": "queueOutput",
-      "queueName": "local-queue"
+      "queueName": "%input-queue%"
     }
   ],
   "disabled": false,

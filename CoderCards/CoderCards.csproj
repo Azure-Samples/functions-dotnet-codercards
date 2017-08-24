@@ -36,14 +36,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
 
-
-    <Content Include="host.json" />
-
-    <Compile Remove="ImageHelpers.cs" />
-
-    <Content Include="appsettings.json">
+    <Content Include="host.json" >
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>    
+
+    <Compile Remove="ImageHelpers.cs" />
     
   </ItemGroup>
 

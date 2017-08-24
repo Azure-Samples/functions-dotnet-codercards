@@ -2,14 +2,14 @@
   "bindings": [
     {
       "type": "queueTrigger",
-      "queueName": "local-queue",
+      "queueName": "%input-queue%",
       "connection": "AzureWebJobsStorage",
       "direction": "in",
       "name": "cardInfo"
     },
     {
       "type": "blob",
-      "path": "input-local/{BlobName}",
+      "path": "%input-container%/{BlobName}",
       "connection": "AzureWebJobsStorage",
       "direction": "in",
       "name": "image"
@@ -17,7 +17,7 @@
     {
       "type": "blob",
       "connection": "AzureWebJobsStorage",
-      "path": "output-local/{BlobName}",
+      "path": "%output-container%/{BlobName}",
       "direction": "out",
       "name": "outputBlob"
     }
