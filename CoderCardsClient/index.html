@@ -364,7 +364,7 @@
             function configureSettings(isLocal) {
                 try {
                     const xhr = new XMLHttpRequest();
-                    const URL = isLocal ? "http://localhost:5000/api/Settings" : "/api/Settings";
+                    const URL = isLocal ? "http://localhost:7071/api/Settings" : "/api/Settings";
                     xhr.open("GET", URL);
                     xhr.setRequestHeader('Content-Type', 'application/json');
                     xhr.onload = (e) => {

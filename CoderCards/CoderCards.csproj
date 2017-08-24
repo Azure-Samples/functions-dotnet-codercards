@@ -48,8 +48,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs" version="3.0.0-beta1-10957" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" version="3.0.0-beta1-10487" />
+    <PackageReference Include="Microsoft.Azure.WebJobs" version="3.0.0-beta1-11006" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" version="3.0.0-beta1-10516" />
     <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="1.0.4" />
     <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
     <PackageReference Include="Microsoft.ProjectOxford.Emotion" Version="1.0.336" />
