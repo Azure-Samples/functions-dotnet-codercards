@@ -34,9 +34,6 @@ namespace CoderCardsLibrary
         const short ScoreFontSize = 55;
         #endregion
 
-        // This code uses System.Drawing to merge images and render text on the image
-        // System.Drawing SHOULD NOT be used in a production application
-        // It is not supported in server scenarios and is used here as a demo only!
         public static void MergeCardImage(string cardPath, byte[] imageBytes, Stream outputStream, string personName, string personTitle, double score)
         {
             using (MemoryStream faceImageStream = new MemoryStream(imageBytes)) {
@@ -62,10 +59,8 @@ namespace CoderCardsLibrary
                         using (var jpgImage = surface.Snapshot().Encode(SKEncodedImageFormat.Jpeg, 80)) {
                             jpgImage.SaveTo(outputStream);
                         }
-                    }
-                   
+                    }                   
                 }
-
             }
         }
 
