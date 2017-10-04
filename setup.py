@@ -44,7 +44,7 @@ runCommand('az storage container set-permission --connection-string "{}" --publi
 runCommand('az storage container set-permission --connection-string "{}" --public-access blob -n {}'.format(connstr, containerContent))
 
 # upload index.html to storage
-runCommand('az storage blob upload --connection-string {} --container-name {} -f {} -n index.html  --content-type "text/html"'.format(connstr, containerContent, indexHtmlFile))
+runCommand('az storage blob upload --connection-string "{}" --container-name {} -f {} -n index.html  --content-type "text/html"'.format(connstr, containerContent, indexHtmlFile))
 
 # set CORS on blobs
 runCommand('az storage cors add --connection-string "{}" --origins "*" --methods GET PUT OPTIONS --allowed-headers "*" --exposed-headers "*" --max-age 200 --services b'.format(connstr))
