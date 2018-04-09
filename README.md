@@ -15,7 +15,7 @@ The sample demonstrates the following features
 
 There's also a C# script version of this sample: [CoderCards](https://github.com/lindydonna/codercards).
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Flindydonna%2FCoderCardsV2%2Fmaster%2FAzureDeploy%2Fazuredeploy.json)
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure-Samples%2Ffunctions-dotnet-codercards%2Fmaster%2FAzureDeploy%2Fazuredeploy.json)
 
 ## Prerequisites
 
